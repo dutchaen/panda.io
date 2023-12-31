@@ -2,8 +2,7 @@
 alternative linktree full stack project
 
 # hi
-im creating a linktree alternative as a full stack project, i will work on the front end first then the backend :D
-
+this is a linktree alternative full stack project, the backend has been written in go, the frontend has been built using html, css, and js, and mysql was used for the database
 
 
 
