@@ -18,4 +18,4 @@ CREATE TABLE users (
     created_at TEXT
 );
 
-UPDATE users SET username = ?, SET email = ?, SET name = ?, SET bio = ?, SET profile_photo_b64 = ?, SET primary_color = ?, SET secondary_color = ?, SET links_json = ? WHERE id = ?
+UPDATE users SET username = ?, email = ?, name = ?, bio = ?, profile_photo_b64 = ?, primary_color = ?, secondary_color = ?, links_json = ? WHERE id = ?
