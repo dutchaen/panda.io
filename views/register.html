@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>panda.io</title>
+    <link rel="shortcut icon" href="static/assets/images/panda-bear.ico" />
+    <link rel="stylesheet" href="static/styles/main.css" />
+    <script src="static/scripts/renderer.js"></script>
+    <script src="static/scripts/bamboo.js"></script>
+</head>
+<body>
+
+    <div class="content">
+        <div class="panda-logo">
+            <img src="static/assets/images/panda-bear.png"/>
+            <p>panda.io</p>
+        </div>
+    
+        <div class="panda-login-form">
+            <p class="panda-login-message">Create your panda.io account!</p>
+    
+    
+            <div class="panda-login-controls">
+                <input id="panda-name" type="text" placeholder="What is your name?" onkeyup = "Page_CanSubmit();">
+                <input id="panda-email" type="email" placeholder="What is your email?" onkeyup = "Page_CanSubmit();">
+                <input id="panda-username" type="text" placeholder="What username would you like?" onkeyup = "Page_CanSubmit();">
+                <input id="panda-password" type="password" placeholder="What do you want your password to be?" onkeyup = "Page_CanSubmit();">
+                <input id="panda-repeat-password" type="password" placeholder="Sorry, what was your password again?" onkeyup = "Page_CanSubmit();">
+                <button id="panda-register-button" onclick="Page_CreateAccount();" disabled>Create your Account!</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <script type="text/javascript">
+
+        let device_height = document.documentElement.getBoundingClientRect().height;
+        //let device_width = document.documentElement.getBoundingClientRect().width;
+        if (device_height < 1000) {
+            document.documentElement.style.setProperty("--height", `${document.documentElement.scrollHeight * 1.1}px`);
+        }
+
+        function Page_DisableControls() {
+            let controls = document.getElementsByClassName("panda-login-controls")[0];
+            for (let i = 0; i < controls.children.length; i++) {
+                let element = controls.children.item(i);
+                element.disabled = true;
+            }
+        }
+
+        function Page_EnableControls() {
+            let controls = document.getElementsByClassName("panda-login-controls")[0];
+            for (let i = 0; i < controls.children.length; i++) {
+                let element = controls.children.item(i);
+                element.disabled = false;
+            }
+        }
+
+        function Page_CreateAccount() {
+            let panda_name = document.getElementById("panda-name").value;
+            let panda_email = document.getElementById("panda-email").value;
+            let panda_username = document.getElementById("panda-username").value;
+            let panda_password = document.getElementById("panda-password").value;
+            let panda_repeat_password = document.getElementById("panda-repeat-password").value;
+
+            let panda_register_button = document.getElementById("panda-register-button");
+
+            Page_DisableControls();
+            
+
+            if (panda_password != panda_repeat_password) {
+                alert("Password and Repeated password do not match.");//  change this shit later
+                panda_password.value = "";
+                panda_repeat_password.value = "";
+
+                Page_EnableControls();
+                register_button.disabled = true;
+                return;
+            }
+
+            register(panda_name, panda_email, panda_username, panda_password)
+                .then(() => {
+                    console.log("Registered.");
+                    window.location.href = "/";
+                })
+                .catch(() => {
+                    console.log("Register has failed.");
+                    Page_EnableControls();
+                    register_button.disabled = true;
+                });
+        }
+
+        function Page_CanSubmit() {
+            let can_submit = true;
+
+            let register_button = document.getElementById("panda-register-button");
+            let controls = document.getElementsByClassName("panda-login-controls")[0];
+            for (let i = 0; i < controls.children.length; i++) {
+                let element = controls.children.item(i);
+                if (element.tagName.toLowerCase() != "input")  {
+                    continue;
+                }
+
+                console.log(element.value);
+                if (element.value.length == 0) {
+                    can_submit = false;
+                    break;
+                }
+            }
+
+            register_button.disabled = !can_submit;
+        }
+        
+    </script>
+    
+</body>
+</html>

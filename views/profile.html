@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>panda.io</title>
+    <link rel="shortcut icon" href="static/assets/images/panda-bear.ico" />
+    <link rel="stylesheet" href="static/styles/main.css" />
+    <script src="static/scripts/renderer.js"></script>
+    <script src="static/scripts/bamboo.js"></script>
+</head>
+<body>
+
+    <div class="content">
+        <div class="panda-logo">
+            <img src="static/assets/images/panda-bear.png"/>
+            <p>panda.io</p>
+        </div>
+        
+    
+        <div class="panda-profile">
+    
+            <div class="panda-profile-info-card">
+    
+                <!--https://avatars.githubusercontent.com/u/127336265?v=4-->
+                <img id="panda-profile-image" class="panda-profile-image" src=""/>
+    
+                <div class="panda-profile-name">
+                    <p id="panda-profile-name"></p>
+                    <p class="panda-bullet">•</p>
+                    <p id="panda-profile-handle" class="panda-profile-name-handle"></p>
+                </div>
+    
+                <div class="panda-profile-bio">
+                    <p id="panda-profile-bio"></p>
+                </div>
+            </div>
+            
+    
+            <div class="panda-profile-links">
+                <!-- <div class="panda-link">
+                    <img src="http://pluspng.com/img-png/twitter-png-logo-logo-twitter-in-png-2500.png" height="30"/>
+                    <p>Twitter</p>
+                </div>
+    
+                <div class="panda-link">
+                    <img src="https://pngimg.com/uploads/github/github_PNG84.png" height="30"/>
+                    <p>GitHub</p>
+                </div>
+    
+                <div class="panda-link">
+                    <img src="https://freepngimg.com/download/logo/69823-instagram-icons-symbol-youtube-computer-logo.png" height="30"/>
+                    <p>Instagram</p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    <script type="text/javascript">
+
+        
+
+
+        let username = "{{.Username}}";
+        get_user( username )
+            .then((public_user) => {
+                Profile_RenderPublicUser( public_user );
+                let device_height = document.documentElement.getBoundingClientRect().height;
+                //let device_width = document.documentElement.getBoundingClientRect().width;
+                if (device_height < 1000) {
+                    document.documentElement.style.setProperty("--height", `${document.documentElement.scrollHeight * 1.1}px`);
+                }
+            });
+    </script>
+
+    <!-- dev message overlaps links on mobile client for some reason -->
+    <!-- <div class="panda-dev-message">
+        <p>created with love & care by dutchaen</p>
+    </div> -->
+    
+</body>
+</html>

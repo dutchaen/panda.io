@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>panda.io</title>
+    <link rel="shortcut icon" href="static/assets/images/panda-bear.ico" />
+    <link rel="stylesheet" href="static/styles/main.css" />
+    <script src="static/scripts/renderer.js"></script>
+    <script src="static/scripts/bamboo.js"></script>
+    <script src="static/scripts/kit.js"></script>
+
+    <script type="text/javascript">
+
+        let admin_user = undefined;
+
+        function loadContent() {
+            let username = "{{.Username}}";
+            get_me( username )
+                .then((x) => {
+                    Dashboard_RenderAdminsterUser( x );
+                    admin_user = x;
+                });
+        }
+
+        
+    </script>
+
+</head>
+<body onload="loadContent();">
+
+    <div class="content">
+        <div class="panda-logo">
+            <img src="static/assets/images/panda-bear.png"/>
+            <p>panda.io</p>
+        </div>
+    
+        
+    
+        
+        <div class="panda-dashboard">
+            <input type="file" class="file" id="attachment" style="display: none;" onchange="fileSelected(this)"/>
+            <img id="panda-profile-image" class="panda-profile-image" src="https://www.smiledental.co.nz/wp-content/uploads/2019/11/background_transparent-9c586d08f02bbbd962b74fe14b7acd8d220aab12f6969fe-1020x1024.png" onclick="openAttachment();"/>
+            <p id="panda-login-message" class="panda-login-message"></p>
+    
+    
+            <div class="panda-dashboard-controls">
+                <div class="panda-dashboard-text-setting">
+                    <label for="panda-account-name">name</label>
+                    <input id="panda-account-name" type="text" value="" spellcheck="false" required>
+                </div>
+                
+    
+                <div class="panda-dashboard-text-setting">
+                    <label for="panda-account-username">username</label>
+                    <input id="panda-account-username" type="text" value="" spellcheck="false" required>
+                </div>
+    
+                <div class="panda-dashboard-text-setting">
+                    <label for="panda-account-email">email</label>
+                    <input id="panda-account-email" type="text" value="" spellcheck="false" required>
+                </div>
+    
+                <div class="panda-dashboard-text-setting">
+                    <label for="panda-account-bio">bio</label>
+                    <input id="panda-account-bio" type="text" spellcheck="false" placeholder="No information given.">
+                </div>
+    
+    
+                <div class="panda-dashboard-color-options">
+    
+                    <div class="panda-dashboard-text-setting">
+                        <label for="panda-account-begin">primary color</label>
+                        <input id="panda-account-begin" type="text" spellcheck="false" value="">
+                    </div>
+        
+                    
+                    <div class="panda-dashboard-text-setting">
+                        <label for="panda-account-end">secondary color</label>
+                        <input id="panda-account-end" type="text" spellcheck="false" value="">
+                    </div>
+                    
+                </div>
+    
+                <div class="panda-dashboard-profile-links"></div>
+    
+    
+                <div class="panda-dashboard-add-link">
+                    <div class="panda-link">
+                        <img src="http://clipart-library.com/img/1930942.png" height="30"/>
+                        
+                        <div class="panda-dashboard-edit-link">
+                            <input type="text" class="panda-dashboard-edit-name" placeholder="What is the title?" spellcheck="false">
+                            <input type="text" class="panda-dashboard-edit-url" placeholder="and what is the link?" spellcheck="false">
+                        </div>
+                        
+    
+                        <div class="panda-link-terminate">
+                            <img src="https://cdn4.iconfinder.com/data/icons/basic-12/614/12_-_Plus-512.png" height="20">
+                        </div>
+                    </div>
+                </div>
+    
+                
+                <button onclick="Page_SaveChanges();">Save changes</button>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script type="text/javascript">
+
+        let device_height = document.documentElement.getBoundingClientRect().height;
+        //let device_width = document.documentElement.getBoundingClientRect().width;
+        if (device_height < 1000) {
+            document.documentElement.style.setProperty("--height", `${document.documentElement.scrollHeight * 1.1}px`);
+        }
+
+
+        function openAttachment() {
+            document.getElementById('attachment').click();
+        }
+
+        document.getElementById("panda-account-begin")
+            .addEventListener('change', async (e) => {
+                if (isValidColor( e.target.value )) {
+                    document.documentElement.style.setProperty("--color0", e.target.value);   
+                } 
+            });
+
+        document.getElementById("panda-account-end")
+            .addEventListener('change', async (e) => {
+                if (isValidColor( e.target.value )) {
+                    document.documentElement.style.setProperty("--color1", e.target.value);
+                }
+                
+            });
+
+        async function fileSelected(input){
+
+            
+            if (!input.files[0].type.startsWith("image/")) {
+                return;
+            }
+
+            input.files[0].arrayBuffer()
+                .then((buffer) => {
+                    let base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)));
+
+                    let img_src = `data:${input.files[0].type};base64,${base64String}`; 
+
+                    let panda_img = document.getElementById("panda-profile-image");
+                    panda_img.setAttribute("src", img_src);
+                })
+                .catch((e) => console.log(e));
+            
+
+            //document.getElementById('btnAttachment').value = "File: " + input.files[0]
+        }
+
+        function Page_DisableControls() {
+            let controls = document.getElementsByClassName("panda-dashboard")[0];
+            for (let i = 0; i < controls.children.length; i++) {
+                let element = controls.children.item(i);
+                element.disabled = true;
+            }
+        }
+
+        function Page_EnableControls() {
+            let controls = document.getElementsByClassName("panda-dashboard")[0];
+            for (let i = 0; i < controls.children.length; i++) {
+                let element = controls.children.item(i);
+                element.disabled = false;
+            }
+        }
+
+
+        function Page_SaveChanges() {
+
+            Page_DisableControls();
+
+            let panda_img = document.getElementById("panda-profile-image");
+            let panda_name = document.getElementById("panda-account-name");
+            let panda_handle = document.getElementById("panda-account-username");
+            let panda_email = document.getElementById("panda-account-email");
+            let panda_bio = document.getElementById("panda-account-bio");
+            let panda_begin = document.getElementById("panda-account-begin");
+            let panda_end = document.getElementById("panda-account-end");
+            // disable all controls
+
+            let primary_color = panda_begin.value;
+            let secondary_color = panda_end.value;
+            
+            if (!isValidColor( primary_color )) {
+                Page_EnableControls();
+                return;
+            }
+
+            if (!isValidColor( secondary_color )) {
+                Page_EnableControls();
+                return;
+            }
+
+            if (!isUsernameValid( panda_handle.value )) {
+                Page_EnableControls();
+                return;
+            }
+
+            if (!isNameValid( panda_name.value )) {
+                Page_EnableControls();
+                return;
+            }
+
+            if (!isEmailValid( panda_email.value )) {
+                Page_EnableControls();
+                return;
+            }
+
+            // write functionality for links
+
+
+            admin_user.name = panda_name.value;
+            admin_user.username = panda_handle.value;
+            admin_user.email = panda_email.value;
+            admin_user.bio = panda_bio.value;
+            admin_user.primary_color = convertHexColorToInt( primary_color );
+            admin_user.secondary_color = convertHexColorToInt( secondary_color );
+            admin_user.profile_photo_b64 = panda_img.getAttribute("src");
+
+            set_me( admin_user )
+                .then(() => {
+                    console.log("Admin user has been set.");
+                    window.location.href = "/";
+                })
+                .catch(() => {
+                    Page_EnableControls();
+                });
+            
+
+            
+        }
+    </script>
+
+    
+    
+</body>
+</html>
