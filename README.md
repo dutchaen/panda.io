@@ -6,5 +6,5 @@ this is a linktree alternative full stack project, the backend has been written 
 
 
 
-# progress: finished profile page :DD
+# progress: dashboard page w/ backend
 ![progress](https://github.com/dutchaen/panda.io/blob/main/progress.png?raw=true)
